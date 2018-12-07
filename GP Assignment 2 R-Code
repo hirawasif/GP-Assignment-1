@@ -1,0 +1,54 @@
+rm(list = ls()) #removes all objects from the current workspace
+
+#Loading packages- always use "require" to load packages
+require(lsr)
+require(psych)
+require(sciplot)
+require(ggplot2)
+library("MASS")
+require(rysgran)
+library(vegan)
+require(smacof)
+#import data from luvit
+who(TRUE)
+
+summary(nations)
+
+
+require(smacof)
+require(MASS)
+
+#inspect data
+summary(nations)
+
+#decide for non-metric multidimensional scaling over classical 
+
+#convert similarity ratings into dissimilarity ratings
+nations_d= sim2diss(nations,method=9) #method based on scale 
+nations_dis=as.dist(as.matrix(nations_d))
+
+nations_dis
+
+# non-metric mds
+nations_mds=isoMDS(nations_dis)
+nations_mds
+
+x<-nations_mds$points[,1]
+y<-nations_mds$points[,2]
+
+lim<-range(c(x,y)) * 1.2
+
+windows()
+plot(x,y,xlab="Coordinate 1",ylab="Coordinate 2",
+     xlim=lim,ylim=lim,type = "n")
+text(x,y,labels= labels(nations_dis),cex = 1)
+
+#shepard plot
+nations_sh=Shepard(nations_dis,nations_mds$points)
+windows()
+plot(nations_sh,pch=20,xlab="Dissimilarities",ylab="Distance",
+     xlim=range(nations_sh$x),
+     ylim=range(nations_sh$x),
+     malin="Shepard Diagram")
+lines(nations_sh$x,nations_sh$yf,type = "S")
+
