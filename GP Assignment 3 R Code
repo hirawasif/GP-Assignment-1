@@ -1,1 +1,42 @@
 
+rm(list = ls()) #removes all objects from the current workspace
+
+library(MonteCarlo)
+
+
+random.normalG1 <- rnorm(n=50, mean=-0.5, sd= 1)
+
+random.normalG2 <- rnorm(n=50, mean=0, sd= 1) #group 2
+
+random.normalG3 <- rnorm(n=50, mean=0, sd= 1) #group 3
+
+random.normalG4 <- rnorm(n=50, mean=0.5, sd= 1) #group 4
+#only values/variables
+Group1=c(rep(1,50))
+Group2=c(rep(2,50))
+Group3=c(rep(3,50))
+Group4=c(rep(4,50))
+group=c(Group1, Group2, Group3, Group4)
+
+#create vectors and put them into data
+mean=c(random.normalG1, random.normalG2, random.normalG3, random.normalG4)
+mydata=cbind(group,mean)
+mydata=as.data.frame(mydata)
+
+#define function #creating the function, I want a data with 50 people mean sd etc
+MC_test <- function(n,loc,scale)
+  {sample= rnorm(n=50,mean=-0.5, sd=1)}
+
+#vfv, function will only work in a special grid, ask for it to run from 10 - 50 with a mean of -0.5, sd of 1
+n_grid=c(10:50)
+loc_grid <- seq(-0.5)
+scale_grid=c(1)
+
+#the parameter itself, and ask it to run the function 100 times in this special parameters. It is giving an error, and 
+param_list=list("n"=n_grid,"loc"=loc_grid,"scale"=scale_grid)
+MC_result <- MonteCarlo(func=MC_test, nrep=100, param_list=param_list)
+summary(MC_result)
+                  
+# do it 4 times with 4 different results for each group 
+###----
+ 
